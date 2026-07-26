@@ -1,0 +1,21 @@
+{
+  "name": "03-ssr-hybrid",
+  "private": true,
+  "version": "1.0.0",
+  "description": "SSR/hybrid: Next.js App Router — server-rendered HTML hydrated on the client",
+  "scripts": {
+    "dev": "next dev -p 3003",
+    "build": "next build",
+    "start": "next start -p 3003"
+  },
+  "dependencies": {
+    "next": "^16.2.12",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.2.17",
+    "typescript": "^6.0.3"
+  }
+}
