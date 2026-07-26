@@ -4,8 +4,7 @@ The server sends **one HTML shell, once**. From then on, JavaScript owns the app
 it intercepts navigation, swaps views in and out of the DOM, and fetches data as
 JSON. The page never fully reloads.
 
-Classic examples: React, Vue, Angular apps (this demo uses vanilla JS to show the
-pattern without a framework).
+Classic examples: React, Vue, Angular apps — here, Vite + React + React Router.
 
 ```
 Browser ──GET /──▶ Server (empty shell + JS bundle)
@@ -15,7 +14,7 @@ Browser JS: route change ──▶ render view into <div id="app"> (no reload)
 ## Traits
 
 - **Rendering:** client, at runtime.
-- **Routing:** client-side router (this demo uses `#hash` routes).
+- **Routing:** client-side router (React Router here).
 - **State:** lives in the browser (component state, stores).
 - **Server:** demoted to a static file host + JSON API.
 

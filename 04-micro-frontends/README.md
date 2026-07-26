@@ -9,10 +9,10 @@ Real-world tools: Webpack Module Federation, single-spa, importmaps, iframes.
 Used by Amazon, Zalando, Spotify, IKEA at scale.
 
 ```
-        ┌────────────── Shell / container app ──────────────┐
-        │  <div id="team-a">   ◀── team-a/widget.js (deployed by Team A)
-        │  <div id="team-b">   ◀── team-b/widget.js (deployed by Team B)
-        └───────────────────────────────────────────────────┘
+        ┌────────────── Shell / container app (host) ───────────────┐
+        │  <ProductsWidget/>  ◀── remoteEntry.js from Team A (:3041)
+        │  <CartWidget/>      ◀── remoteEntry.js from Team B (:3042)
+        └────────────────────────────────────────────────────────────┘
 ```
 
 ## Traits

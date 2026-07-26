@@ -5,7 +5,7 @@ every navigation is a full page load.** The server receives the request, builds 
 complete HTML (often from templates + database data), and sends it back. The browser
 throws away the old page and renders the new one.
 
-Classic examples: Rails, Django, Laravel/PHP, JSP — and this demo's plain Node server.
+Classic examples: Rails, Django, Laravel/PHP, JSP — and this demo's Express server.
 
 ```
 Browser ──GET /about──▶ Server (builds full HTML) ──▶ Browser renders new page
