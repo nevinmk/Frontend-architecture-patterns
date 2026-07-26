@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Architectures — Hub</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { max-width: 900px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    h1 { margin-bottom: .25rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .card { border: 1px solid color-mix(in srgb, currentColor 25%, transparent); border-radius: 10px; padding: 1rem; }
+    .card h2 { margin: 0 0 .25rem; font-size: 1.05rem; }
+    .card p { margin: .25rem 0 .75rem; font-size: .875rem; opacity: .8; }
+    .card a.open { font-weight: 600; }
+    .status { display: inline-block; width: .6rem; height: .6rem; border-radius: 50%; background: #999; margin-right: .4rem; }
+    .status.up { background: #2e9e44; }
+    .status.down { background: #d43d3d; }
+    .extras { font-size: .8rem; margin-top: .5rem; opacity: .75; }
+    footer { margin-top: 2rem; font-size: .85rem; opacity: .7; }
+    code { background: color-mix(in srgb, currentColor 12%, transparent); padding: .1rem .3rem; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Frontend Architectures</h1>
+  <p>Six architectures, each a standalone React project. Green dot = the app is running.
+     Start everything with <code>npm run dev</code> at the workspace root.</p>
+
+  <div class="grid" id="cards"></div>
+
+  <footer>
+    Ports: hub 3000 · apps 3001–3006 · micro-frontend remotes 3041/3042.
+    Each folder's README explains the architecture in depth.
+  </footer>
+
+  <script>
+    const apps = [
+      { port: 3001, name: "01 · MPA", desc: "Multi-page app — Express renders full HTML per request; React as server templating, zero client JS." },
+      { port: 3002, name: "02 · SPA", desc: "Single-page app — Vite + React Router; one shell, client-side routing and state." },
+      { port: 3003, name: "03 · SSR / Hybrid", desc: "Next.js — server-rendered first paint, hydrated into an interactive app." },
+      { port: 3004, name: "04 · Micro-frontends", desc: "Module Federation — shell composes two independently deployed React remotes.", extras: [[3041, "products remote"], [3042, "cart remote"]] },
+      { port: 3005, name: "05 · JAMstack", desc: "Next.js static export — HTML pre-built at build time, data from an API at runtime." },
+      { port: 3006, name: "06 · PWA", desc: "Vite + service worker + manifest — installable, works offline." },
+    ];
+
+    const grid = document.getElementById("cards");
+    for (const app of apps) {
+      const url = `http://localhost:${app.port}/`;
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h2><span class="status" id="s${app.port}"></span>${app.name}</h2>
+        <p>${app.desc}</p>
+        <a class="open" href="${url}" target="_blank" rel="noopener">Open →</a>
+        ${app.extras ? `<div class="extras">Standalone: ${app.extras
+          .map(([p, label]) => `<a href="http://localhost:${p}/" target="_blank" rel="noopener">${label} (:${p})</a>`)
+          .join(" · ")}</div>` : ""}`;
+      grid.appendChild(card);
+    }
+
+    // Reachability check: an opaque no-cors fetch resolves if something is
+    // listening on the port and rejects if nothing is.
+    async function refresh() {
+      for (const app of apps) {
+        const dot = document.getElementById("s" + app.port);
+        try {
+          await fetch(`http://localhost:${app.port}/`, { mode: "no-cors", cache: "no-store" });
+          dot.className = "status up";
+          dot.title = "running";
+        } catch {
+          dot.className = "status down";
+          dot.title = "not running — start it from its folder or `npm run dev` at the root";
+        }
+      }
+    }
+    refresh();
+    setInterval(refresh, 5000);
+  </script>
+</body>
+</html>
