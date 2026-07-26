@@ -5,125 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frontend Architectures — Hub</title>
   <style>
+    /* Committed dark design, matched to the reference mock. */
     :root {
-      color-scheme: light dark;
-      --bg: #f6f7fb;
-      --card: #ffffff;
-      --text: #1a1d27;
-      --muted: #5b6172;
-      --line: #e3e6ef;
-      --chip: #eef0f7;
-      --up: #22a34a;
-      --down: #d43d3d;
-      --shadow: 0 1px 2px rgb(16 20 35 / 5%), 0 8px 24px rgb(16 20 35 / 6%);
-      --shadow-hover: 0 2px 4px rgb(16 20 35 / 7%), 0 14px 36px rgb(16 20 35 / 13%);
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0e1016;
-        --card: #171a23;
-        --text: #e8eaf2;
-        --muted: #9aa1b5;
-        --line: #262b3a;
-        --chip: #202534;
-        --shadow: 0 1px 2px rgb(0 0 0 / 40%);
-        --shadow-hover: 0 10px 32px rgb(0 0 0 / 55%);
-      }
+      --bg: #0d1a23;
+      --bg-glow: #12222e;
+      --card: rgba(255, 255, 255, 0.035);
+      --card-border: rgba(158, 194, 216, 0.14);
+      --line: rgba(158, 194, 216, 0.12);
+      --title: #e9f1f6;
+      --text: #c6d4dd;
+      --muted: #8fa4b1;
+      --faint: #6d8290;
+      --chip: rgba(158, 194, 216, 0.09);
+      --green: #7bc98c;
+      --serif: ui-serif, "New York", Georgia, Cambria, "Times New Roman", serif;
+      --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+      --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      background: var(--bg);
+      background: radial-gradient(1100px 600px at 30% -10%, var(--bg-glow), var(--bg) 70%);
+      min-height: 100vh;
       color: var(--text);
-      font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.55;
+      font-family: var(--sans);
+      line-height: 1.6;
     }
-    .wrap { max-width: 1020px; margin: 0 auto; padding: 3rem 1.25rem 2rem; }
+    .wrap { max-width: 1060px; margin: 0 auto; padding: 3.25rem 1.5rem 2rem; }
 
     header { margin-bottom: 2.25rem; }
     .eyebrow {
-      font-size: .75rem; font-weight: 700; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--muted); margin: 0 0 .5rem;
+      font-size: .72rem; font-weight: 600; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--muted); margin: 0 0 .9rem;
     }
     h1 {
-      margin: 0 0 .5rem; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15;
-      background: linear-gradient(92deg, #4f7cff, #9a5cff 55%, #e05c9d);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      width: fit-content;
+      margin: 0 0 .7rem;
+      font-family: var(--serif); font-weight: 500;
+      font-size: clamp(2.2rem, 5.5vw, 3.4rem); line-height: 1.08;
+      letter-spacing: .01em; color: var(--title);
     }
-    .lede { margin: 0; max-width: 60ch; color: var(--muted); }
+    .lede { margin: 0; max-width: 64ch; font-size: 1.02rem; color: var(--text); }
     .lede code {
-      background: var(--chip); border: 1px solid var(--line);
-      padding: .1rem .4rem; border-radius: 6px; font-size: .85em;
+      font-family: var(--mono); font-size: .82em;
+      background: var(--chip); border-radius: 6px; padding: .14rem .5rem;
+      color: var(--text);
     }
 
     .grid {
-      display: grid; gap: 1rem;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      display: grid; gap: 1.15rem;
+      grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
     }
     .card {
-      position: relative;
-      display: flex; flex-direction: column; gap: .55rem;
+      display: flex; flex-direction: column; gap: .8rem;
       background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 1.15rem 1.15rem 1rem;
-      box-shadow: var(--shadow);
-      transition: transform .16s ease, box-shadow .16s ease;
-      overflow: hidden;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.35rem 1.4rem 1.15rem;
+      backdrop-filter: blur(6px);
+      transition: border-color .18s ease, background .18s ease;
     }
-    .card::before {
-      content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
-      background: var(--accent);
+    .card:hover {
+      border-color: rgba(158, 194, 216, 0.28);
+      background: rgba(255, 255, 255, 0.05);
     }
-    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
 
-    .card-top { display: flex; align-items: center; gap: .6rem; }
+    .card-top { display: flex; align-items: center; gap: .8rem; }
     .num {
       display: grid; place-items: center;
-      width: 2.1rem; height: 2.1rem; border-radius: 9px;
-      font-weight: 800; font-size: .8rem; letter-spacing: .02em;
-      color: #fff; background: var(--accent);
+      width: 2.4rem; height: 2.4rem; border-radius: 10px;
+      background: var(--chip); border: 1px solid var(--card-border);
+      font-weight: 700; font-size: .85rem; color: var(--title);
     }
-    .card h2 { margin: 0; font-size: 1.02rem; flex: 1; }
+    .card h2 {
+      margin: 0; flex: 1;
+      font-family: var(--serif); font-weight: 500;
+      font-size: 1.35rem; letter-spacing: .01em; color: var(--title);
+    }
     .status {
-      width: .55rem; height: .55rem; border-radius: 50%;
-      background: var(--muted); flex: none;
+      width: .6rem; height: .6rem; border-radius: 50%;
+      background: var(--faint); opacity: .45; flex: none;
     }
-    .status.up { background: var(--up); box-shadow: 0 0 0 0 rgb(34 163 74 / 45%); animation: pulse 2.2s infinite; }
-    .status.down { background: var(--down); }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgb(34 163 74 / 40%); }
-      70% { box-shadow: 0 0 0 7px rgb(34 163 74 / 0%); }
-      100% { box-shadow: 0 0 0 0 rgb(34 163 74 / 0%); }
-    }
+    .status.up { background: var(--green); opacity: 1; }
 
     .stack {
-      font-size: .72rem; font-weight: 600; color: var(--muted);
-      background: var(--chip); border: 1px solid var(--line);
-      border-radius: 999px; padding: .18rem .6rem; width: fit-content;
+      width: fit-content;
+      font-size: .8rem; color: var(--text);
+      background: var(--chip); border: 1px solid var(--card-border);
+      border-radius: 999px; padding: .28rem .8rem;
     }
-    .desc { margin: 0; font-size: .875rem; color: var(--muted); flex: 1; }
+    .desc { margin: 0; font-size: .95rem; color: var(--text); flex: 1; }
+    .extras { font-size: .85rem; color: var(--muted); }
+    .extras a { color: inherit; }
 
     .card-foot {
       display: flex; align-items: center; justify-content: space-between;
-      margin-top: .35rem; padding-top: .7rem; border-top: 1px solid var(--line);
+      margin-top: .3rem; padding-top: .9rem; border-top: 1px solid var(--line);
     }
     .open {
-      display: inline-flex; align-items: center; gap: .3rem;
-      font-size: .85rem; font-weight: 700; text-decoration: none;
-      color: var(--accent);
+      font-size: .95rem; font-weight: 700; text-decoration: none;
+      color: #cfe3f0;
     }
     .open:hover { text-decoration: underline; }
-    .port { font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-    .extras { font-size: .75rem; color: var(--muted); margin-top: .15rem; }
-    .extras a { color: inherit; }
+    .port { font-size: .9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 
     footer {
-      margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
-      font-size: .82rem; color: var(--muted);
+      margin-top: 2.75rem; padding-top: 1.4rem; border-top: 1px solid var(--line);
+      font-size: .92rem; color: var(--muted);
       display: flex; flex-wrap: wrap; gap: .4rem 1.5rem; justify-content: space-between;
     }
+    footer em { font-style: italic; }
+    footer strong { color: var(--text); }
   </style>
 </head>
 <body>
@@ -139,7 +130,7 @@
     <div class="grid" id="cards"></div>
 
     <footer>
-      <span>Ports — hub <strong>3000</strong> · apps <strong>3001–3006</strong> · remotes <strong>3041/3042</strong></span>
+      <span><em>Ports</em> — hub <strong>3000</strong> · apps <strong>3001–3006</strong> · remotes <strong>3041/3042</strong></span>
       <span>Each folder's README explains its architecture in depth.</span>
     </footer>
   </div>
@@ -147,18 +138,18 @@
   <script>
     const apps = [
       { port: 3001, num: "01", name: "Multi-Page App", stack: "Express + React SSR templates",
-        accent: "#e08a3c", desc: "Every navigation is a full page load; the server renders complete HTML. Zero client-side JavaScript." },
+        desc: "Every navigation is a full page load; the server renders complete HTML. Zero client-side JavaScript." },
       { port: 3002, num: "02", name: "Single-Page App", stack: "Vite · React · React Router",
-        accent: "#4f7cff", desc: "One HTML shell; routing, rendering, and state live entirely in the browser." },
+        desc: "One HTML shell; routing, rendering, and state live entirely in the browser." },
       { port: 3003, num: "03", name: "SSR / Hybrid", stack: "Next.js App Router",
-        accent: "#9a5cff", desc: "Server-rendered first paint, hydrated in the browser into a fully interactive app." },
+        desc: "Server-rendered first paint, hydrated in the browser into a fully interactive app." },
       { port: 3004, num: "04", name: "Micro-Frontends", stack: "Vite · Module Federation",
-        accent: "#e05c9d", desc: "A shell composes two independently deployed remotes at runtime — zero shared code.",
+        desc: "A shell composes two independently deployed remotes at runtime — zero shared code.",
         extras: [[3041, "products"], [3042, "cart"]] },
       { port: 3005, num: "05", name: "JAMstack", stack: "Next.js static export",
-        accent: "#22a34a", desc: "HTML frozen at build time, served as plain files; dynamic data fetched from APIs." },
+        desc: "HTML frozen at build time, served as plain files; dynamic data fetched from APIs." },
       { port: 3006, num: "06", name: "Progressive Web App", stack: "Vite · vite-plugin-pwa",
-        accent: "#0ea5b7", desc: "Service worker + manifest: installable, instant repeat loads, works fully offline." },
+        desc: "Service worker + manifest: installable, instant repeat loads, works fully offline." },
     ];
 
     const grid = document.getElementById("cards");
@@ -166,7 +157,6 @@
       const url = `http://localhost:${app.port}/`;
       const card = document.createElement("div");
       card.className = "card";
-      card.style.setProperty("--accent", app.accent);
       card.innerHTML = `
         <div class="card-top">
           <span class="num">${app.num}</span>
@@ -176,7 +166,7 @@
         <span class="stack">${app.stack}</span>
         <p class="desc">${app.desc}</p>
         ${app.extras ? `<div class="extras">Standalone remotes: ${app.extras
-          .map(([p, label]) => `<a href="http://localhost:${p}/" target="_blank" rel="noopener">${label} :${p}</a>`)
+          .map(([p, label]) => `<a href="http://localhost:${p}/" target="_blank" rel="noopener">${label}:${p}</a>`)
           .join(" · ")}</div>` : ""}
         <div class="card-foot">
           <a class="open" href="${url}" target="_blank" rel="noopener">Open app →</a>
@@ -195,7 +185,7 @@
           dot.className = "status up";
           dot.title = "running";
         } catch {
-          dot.className = "status down";
+          dot.className = "status";
           dot.title = "not running — start it from its folder or `npm run dev` at the root";
         }
       }
