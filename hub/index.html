@@ -5,42 +5,160 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Frontend Architectures — Hub</title>
   <style>
-    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
-    body { max-width: 900px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
-    h1 { margin-bottom: .25rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
-    .card { border: 1px solid color-mix(in srgb, currentColor 25%, transparent); border-radius: 10px; padding: 1rem; }
-    .card h2 { margin: 0 0 .25rem; font-size: 1.05rem; }
-    .card p { margin: .25rem 0 .75rem; font-size: .875rem; opacity: .8; }
-    .card a.open { font-weight: 600; }
-    .status { display: inline-block; width: .6rem; height: .6rem; border-radius: 50%; background: #999; margin-right: .4rem; }
-    .status.up { background: #2e9e44; }
-    .status.down { background: #d43d3d; }
-    .extras { font-size: .8rem; margin-top: .5rem; opacity: .75; }
-    footer { margin-top: 2rem; font-size: .85rem; opacity: .7; }
-    code { background: color-mix(in srgb, currentColor 12%, transparent); padding: .1rem .3rem; border-radius: 4px; }
+    :root {
+      color-scheme: light dark;
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1a1d27;
+      --muted: #5b6172;
+      --line: #e3e6ef;
+      --chip: #eef0f7;
+      --up: #22a34a;
+      --down: #d43d3d;
+      --shadow: 0 1px 2px rgb(16 20 35 / 5%), 0 8px 24px rgb(16 20 35 / 6%);
+      --shadow-hover: 0 2px 4px rgb(16 20 35 / 7%), 0 14px 36px rgb(16 20 35 / 13%);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0e1016;
+        --card: #171a23;
+        --text: #e8eaf2;
+        --muted: #9aa1b5;
+        --line: #262b3a;
+        --chip: #202534;
+        --shadow: 0 1px 2px rgb(0 0 0 / 40%);
+        --shadow-hover: 0 10px 32px rgb(0 0 0 / 55%);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.55;
+    }
+    .wrap { max-width: 1020px; margin: 0 auto; padding: 3rem 1.25rem 2rem; }
+
+    header { margin-bottom: 2.25rem; }
+    .eyebrow {
+      font-size: .75rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--muted); margin: 0 0 .5rem;
+    }
+    h1 {
+      margin: 0 0 .5rem; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.15;
+      background: linear-gradient(92deg, #4f7cff, #9a5cff 55%, #e05c9d);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      width: fit-content;
+    }
+    .lede { margin: 0; max-width: 60ch; color: var(--muted); }
+    .lede code {
+      background: var(--chip); border: 1px solid var(--line);
+      padding: .1rem .4rem; border-radius: 6px; font-size: .85em;
+    }
+
+    .grid {
+      display: grid; gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    }
+    .card {
+      position: relative;
+      display: flex; flex-direction: column; gap: .55rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.15rem 1.15rem 1rem;
+      box-shadow: var(--shadow);
+      transition: transform .16s ease, box-shadow .16s ease;
+      overflow: hidden;
+    }
+    .card::before {
+      content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+      background: var(--accent);
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+
+    .card-top { display: flex; align-items: center; gap: .6rem; }
+    .num {
+      display: grid; place-items: center;
+      width: 2.1rem; height: 2.1rem; border-radius: 9px;
+      font-weight: 800; font-size: .8rem; letter-spacing: .02em;
+      color: #fff; background: var(--accent);
+    }
+    .card h2 { margin: 0; font-size: 1.02rem; flex: 1; }
+    .status {
+      width: .55rem; height: .55rem; border-radius: 50%;
+      background: var(--muted); flex: none;
+    }
+    .status.up { background: var(--up); box-shadow: 0 0 0 0 rgb(34 163 74 / 45%); animation: pulse 2.2s infinite; }
+    .status.down { background: var(--down); }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgb(34 163 74 / 40%); }
+      70% { box-shadow: 0 0 0 7px rgb(34 163 74 / 0%); }
+      100% { box-shadow: 0 0 0 0 rgb(34 163 74 / 0%); }
+    }
+
+    .stack {
+      font-size: .72rem; font-weight: 600; color: var(--muted);
+      background: var(--chip); border: 1px solid var(--line);
+      border-radius: 999px; padding: .18rem .6rem; width: fit-content;
+    }
+    .desc { margin: 0; font-size: .875rem; color: var(--muted); flex: 1; }
+
+    .card-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: .35rem; padding-top: .7rem; border-top: 1px solid var(--line);
+    }
+    .open {
+      display: inline-flex; align-items: center; gap: .3rem;
+      font-size: .85rem; font-weight: 700; text-decoration: none;
+      color: var(--accent);
+    }
+    .open:hover { text-decoration: underline; }
+    .port { font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .extras { font-size: .75rem; color: var(--muted); margin-top: .15rem; }
+    .extras a { color: inherit; }
+
+    footer {
+      margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
+      font-size: .82rem; color: var(--muted);
+      display: flex; flex-wrap: wrap; gap: .4rem 1.5rem; justify-content: space-between;
+    }
   </style>
 </head>
 <body>
-  <h1>Frontend Architectures</h1>
-  <p>Six architectures, each a standalone React project. Green dot = the app is running.
-     Start everything with <code>npm run dev</code> at the workspace root.</p>
+  <div class="wrap">
+    <header>
+      <p class="eyebrow">Six ways to build a frontend</p>
+      <h1>Frontend Architectures</h1>
+      <p class="lede">Each card is a standalone React project demonstrating one
+        architecture. A pulsing green dot means the app is live. Start everything
+        with <code>npm run dev</code> at the workspace root.</p>
+    </header>
 
-  <div class="grid" id="cards"></div>
+    <div class="grid" id="cards"></div>
 
-  <footer>
-    Ports: hub 3000 · apps 3001–3006 · micro-frontend remotes 3041/3042.
-    Each folder's README explains the architecture in depth.
-  </footer>
+    <footer>
+      <span>Ports — hub <strong>3000</strong> · apps <strong>3001–3006</strong> · remotes <strong>3041/3042</strong></span>
+      <span>Each folder's README explains its architecture in depth.</span>
+    </footer>
+  </div>
 
   <script>
     const apps = [
-      { port: 3001, name: "01 · MPA", desc: "Multi-page app — Express renders full HTML per request; React as server templating, zero client JS." },
-      { port: 3002, name: "02 · SPA", desc: "Single-page app — Vite + React Router; one shell, client-side routing and state." },
-      { port: 3003, name: "03 · SSR / Hybrid", desc: "Next.js — server-rendered first paint, hydrated into an interactive app." },
-      { port: 3004, name: "04 · Micro-frontends", desc: "Module Federation — shell composes two independently deployed React remotes.", extras: [[3041, "products remote"], [3042, "cart remote"]] },
-      { port: 3005, name: "05 · JAMstack", desc: "Next.js static export — HTML pre-built at build time, data from an API at runtime." },
-      { port: 3006, name: "06 · PWA", desc: "Vite + service worker + manifest — installable, works offline." },
+      { port: 3001, num: "01", name: "Multi-Page App", stack: "Express + React SSR templates",
+        accent: "#e08a3c", desc: "Every navigation is a full page load; the server renders complete HTML. Zero client-side JavaScript." },
+      { port: 3002, num: "02", name: "Single-Page App", stack: "Vite · React · React Router",
+        accent: "#4f7cff", desc: "One HTML shell; routing, rendering, and state live entirely in the browser." },
+      { port: 3003, num: "03", name: "SSR / Hybrid", stack: "Next.js App Router",
+        accent: "#9a5cff", desc: "Server-rendered first paint, hydrated in the browser into a fully interactive app." },
+      { port: 3004, num: "04", name: "Micro-Frontends", stack: "Vite · Module Federation",
+        accent: "#e05c9d", desc: "A shell composes two independently deployed remotes at runtime — zero shared code.",
+        extras: [[3041, "products"], [3042, "cart"]] },
+      { port: 3005, num: "05", name: "JAMstack", stack: "Next.js static export",
+        accent: "#22a34a", desc: "HTML frozen at build time, served as plain files; dynamic data fetched from APIs." },
+      { port: 3006, num: "06", name: "Progressive Web App", stack: "Vite · vite-plugin-pwa",
+        accent: "#0ea5b7", desc: "Service worker + manifest: installable, instant repeat loads, works fully offline." },
     ];
 
     const grid = document.getElementById("cards");
@@ -48,13 +166,22 @@
       const url = `http://localhost:${app.port}/`;
       const card = document.createElement("div");
       card.className = "card";
+      card.style.setProperty("--accent", app.accent);
       card.innerHTML = `
-        <h2><span class="status" id="s${app.port}"></span>${app.name}</h2>
-        <p>${app.desc}</p>
-        <a class="open" href="${url}" target="_blank" rel="noopener">Open →</a>
-        ${app.extras ? `<div class="extras">Standalone: ${app.extras
-          .map(([p, label]) => `<a href="http://localhost:${p}/" target="_blank" rel="noopener">${label} (:${p})</a>`)
-          .join(" · ")}</div>` : ""}`;
+        <div class="card-top">
+          <span class="num">${app.num}</span>
+          <h2>${app.name}</h2>
+          <span class="status" id="s${app.port}" title="checking…"></span>
+        </div>
+        <span class="stack">${app.stack}</span>
+        <p class="desc">${app.desc}</p>
+        ${app.extras ? `<div class="extras">Standalone remotes: ${app.extras
+          .map(([p, label]) => `<a href="http://localhost:${p}/" target="_blank" rel="noopener">${label} :${p}</a>`)
+          .join(" · ")}</div>` : ""}
+        <div class="card-foot">
+          <a class="open" href="${url}" target="_blank" rel="noopener">Open app →</a>
+          <span class="port">:${app.port}</span>
+        </div>`;
       grid.appendChild(card);
     }
 
