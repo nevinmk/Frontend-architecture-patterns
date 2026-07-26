@@ -14,6 +14,8 @@ to look for in the demo.
 | [05-jamstack](05-jamstack/) | JAMstack / Static-first | Next.js `output: "export"` + static host | 3005 |
 | [06-pwa](06-pwa/) | Progressive Web App | Vite + React + vite-plugin-pwa | 3006 |
 
+<img width="972" height="854" alt="image" src="https://github.com/user-attachments/assets/56c40fe5-9850-4dfa-82c6-a21628933dac" />
+
 ## How they relate
 
 - **01–05** are alternative answers to "*where and when is the HTML produced?*"
