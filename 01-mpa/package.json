@@ -1,0 +1,23 @@
+{
+  "name": "01-mpa",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Multi-page app: Express + React as a server-side templating engine",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.tsx",
+    "start": "tsx src/server.tsx"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.2.17",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2"
+  }
+}
