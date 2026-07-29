@@ -2,10 +2,10 @@
   "name": "fe-architectures",
   "private": true,
   "version": "1.0.0",
-  "description": "Six frontend architectures, each a standalone React project + a hub page to browse them",
+  "description": "Seven frontend architectures, each a standalone React project + a hub page to browse them",
   "scripts": {
     "setup": "npm run build --prefix 05-jamstack && npm run build --prefix 06-pwa",
-    "dev": "concurrently -n hub,mpa,spa,ssr,products,cart,shell,jam,pwa -c cyan,green,yellow,blue,magenta,magenta,magenta,gray,white \"node hub/server.js\" \"npm run dev --prefix 01-mpa\" \"npm run dev --prefix 02-spa\" \"npm run dev --prefix 03-ssr-hybrid\" \"npm run dev --prefix 04-micro-frontends/remote-products\" \"npm run dev --prefix 04-micro-frontends/remote-cart\" \"npm run dev --prefix 04-micro-frontends/shell\" \"npm run start --prefix 05-jamstack\" \"npm run preview --prefix 06-pwa\"",
+    "dev": "concurrently -n hub,mpa,spa,ssr,products,cart,shell,jam,pwa,gql-api,gql-web -c cyan,green,yellow,blue,magenta,magenta,magenta,gray,white,red,redBright \"node hub/server.js\" \"npm run dev --prefix 01-mpa\" \"npm run dev --prefix 02-spa\" \"npm run dev --prefix 03-ssr-hybrid\" \"npm run dev --prefix 04-micro-frontends/remote-products\" \"npm run dev --prefix 04-micro-frontends/remote-cart\" \"npm run dev --prefix 04-micro-frontends/shell\" \"npm run start --prefix 05-jamstack\" \"npm run preview --prefix 06-pwa\" \"npm run dev:api --prefix 07-graphql\" \"npm run dev:web --prefix 07-graphql\"",
     "hub": "node hub/server.js"
   },
   "devDependencies": {

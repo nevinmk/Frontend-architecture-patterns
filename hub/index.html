@@ -120,7 +120,7 @@
 <body>
   <div class="wrap">
     <header>
-      <p class="eyebrow">Six ways to build a frontend</p>
+      <p class="eyebrow">Seven ways to build a frontend</p>
       <h1>Frontend Architectures</h1>
       <p class="lede">Each card is a standalone React project demonstrating one
         architecture. A pulsing green dot means the app is live. Start everything
@@ -130,7 +130,7 @@
     <div class="grid" id="cards"></div>
 
     <footer>
-      <span><em>Ports</em> — hub <strong>3000</strong> · apps <strong>3001–3006</strong> · remotes <strong>3041/3042</strong></span>
+      <span><em>Ports</em> — hub <strong>3000</strong> · apps <strong>3001–3007</strong> · remotes <strong>3041/3042</strong> · GraphQL API <strong>3071</strong></span>
       <span>Each folder's README explains its architecture in depth.</span>
     </footer>
   </div>
@@ -150,6 +150,9 @@
         desc: "HTML frozen at build time, served as plain files; dynamic data fetched from APIs." },
       { port: 3006, num: "06", name: "Progressive Web App", stack: "Vite · vite-plugin-pwa",
         desc: "Service worker + manifest: installable, instant repeat loads, works fully offline." },
+      { port: 3007, num: "07", name: "GraphQL Data Layer", stack: "graphql-yoga · Apollo Client",
+        desc: "One schema, one endpoint: the client declares the exact shape it needs and gets it in a single round-trip.",
+        extrasLabel: "API", extras: [[3071, "graphql + rest"]] },
     ];
 
     const grid = document.getElementById("cards");
@@ -165,7 +168,7 @@
         </div>
         <span class="stack">${app.stack}</span>
         <p class="desc">${app.desc}</p>
-        ${app.extras ? `<div class="extras">Standalone remotes: ${app.extras
+        ${app.extras ? `<div class="extras">${app.extrasLabel ?? "Standalone remotes"}: ${app.extras
           .map(([p, label]) => `<a href="http://localhost:${p}/" target="_blank" rel="noopener">${label}:${p}</a>`)
           .join(" · ")}</div>` : ""}
         <div class="card-foot">

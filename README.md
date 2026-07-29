@@ -1,9 +1,9 @@
 # Frontend Architectures
 
-Six major application-level frontend architectures. Each is a **standalone React
-project** with its own `package.json`, built with the industry-standard tool for
-that architecture, plus a README explaining the pattern, its trade-offs, and what
-to look for in the demo.
+Seven major application-level frontend architectures. Each is a **standalone
+React project** with its own `package.json`, built with the industry-standard
+tool for that architecture, plus a README explaining the pattern, its trade-offs,
+and what to look for in the demo.
 
 | Folder | Architecture | Stack | Port |
 |---|---|---|---|
@@ -13,6 +13,7 @@ to look for in the demo.
 | [04-micro-frontends](04-micro-frontends/) | Micro-Frontends | Vite + Module Federation (shell + 2 remotes) | 3004 (+3041, 3042) |
 | [05-jamstack](05-jamstack/) | JAMstack / Static-first | Next.js `output: "export"` + static host | 3005 |
 | [06-pwa](06-pwa/) | Progressive Web App | Vite + React + vite-plugin-pwa | 3006 |
+| [07-graphql](07-graphql/) | GraphQL data layer | graphql-yoga + Vite + React + Apollo Client | 3007 (+3071 API) |
 
 <img width="972" height="854" alt="image" src="https://github.com/user-attachments/assets/56c40fe5-9850-4dfa-82c6-a21628933dac" />
 
@@ -22,6 +23,10 @@ to look for in the demo.
   (server per request → client at runtime → server + client → per team → build time).
 - **06 (PWA)** is orthogonal: a delivery layer (service worker + manifest) that
   can wrap any of the others.
+- **07 (GraphQL)** is orthogonal too, one layer down: it answers "*how does the
+  client get its data?*" and could sit underneath 02, 03 or 04 unchanged. Its
+  API also publishes the same catalogue as REST, so the demo can measure the two
+  contracts against each other rather than just describe them.
 
 ## Browse everything from one page
 
@@ -38,12 +43,13 @@ cd 04-micro-frontends/remote-cart && npm install && cd ../..
 cd 04-micro-frontends/shell && npm install && cd ../..
 cd 05-jamstack && npm install && cd ..
 cd 06-pwa && npm install && cd ..
+cd 07-graphql && npm install && cd ..
 npm install                    # root: the `concurrently` runner
 
 # one-time: pre-build the two that serve build output (JAMstack + PWA)
 npm run setup
 
-# run everything (hub + all six apps) in one terminal
+# run everything (hub + all seven apps) in one terminal
 npm run dev
 # open http://localhost:3000
 ```
@@ -61,3 +67,4 @@ look for in the demo — lives in that folder's README:
 - [04 — Micro-Frontends](04-micro-frontends/README.md)
 - [05 — JAMstack / Static-first](05-jamstack/README.md)
 - [06 — Progressive Web App (PWA)](06-pwa/README.md)
+- [07 — GraphQL Data Layer](07-graphql/README.md)

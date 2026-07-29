@@ -1,0 +1,65 @@
+/* The other demos in this repo run unstyled on purpose. This one earns a
+   stylesheet: the page puts the query it sent next to the result it got, and
+   that is unreadable as raw flow text. */
+
+:root {
+  --bg: #fbfbfa;
+  --panel: #ffffff;
+  --ink: #1c1f23;
+  --muted: #6b7480;
+  --line: #e2e5e9;
+  --accent: #a4308f;
+  --code-bg: #f4f4f6;
+  --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.6 ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+h1 { font-size: 1.7rem; margin: 0 0 .3rem; }
+h3 { font-size: .95rem; margin: 0 0 .4rem; }
+p { margin: .5rem 0; }
+.lede { color: var(--muted); margin: 0 0 1.25rem; max-width: 70ch; }
+.muted { color: var(--muted); }
+small { color: var(--muted); }
+.err { color: #b4231f; }
+
+/* ---- the query / result panel -------------------------------------------- */
+.panel {
+  border: 1px solid var(--line); border-radius: 10px;
+  background: var(--panel); padding: 1.1rem 1.25rem; margin-bottom: 1rem;
+}
+.split { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+
+pre {
+  margin: 0; padding: .75rem .85rem; overflow-x: auto;
+  background: var(--code-bg); border-radius: 8px;
+  font: 12.5px/1.55 var(--mono); white-space: pre;
+}
+code { font-family: var(--mono); font-size: .88em; }
+
+/* ---- product / review lists ---------------------------------------------- */
+.cards { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.card { border: 1px solid var(--line); border-radius: 9px; padding: .85rem 1rem; }
+.card header { display: flex; align-items: center; gap: .55rem; margin-bottom: .3rem; }
+.card .emoji { font-size: 1.5rem; }
+.card .name { font-weight: 600; }
+.card header .muted { margin-left: auto; }
+.review { border-top: 1px dashed var(--line); padding-top: .45rem; margin-top: .45rem; font-size: .88rem; }
+
+button.fav {
+  font: inherit; cursor: pointer; line-height: 1;
+  padding: .2rem .4rem; border: 1px solid var(--line); border-radius: 7px;
+  background: #fff; color: var(--muted);
+}
+button.fav[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+button.fav:hover:not(:disabled) { border-color: #b9bfc7; }
+button.fav:disabled { opacity: .5; cursor: progress; }
