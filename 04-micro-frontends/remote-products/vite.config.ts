@@ -18,6 +18,9 @@ export default defineConfig({
       },
     }),
   ],
+  // server/preview are Vite's dev & local-preview servers only — in prod this
+  // is a static build served from a CDN/host, where CORS is set at that layer
+  // (allow the shell's origin specifically, not cors: true / "*").
   server: { port: 3041, cors: true },
   preview: { port: 3041, cors: true },
   build: { target: "chrome89" },
