@@ -1,4 +1,5 @@
 import { Counter } from "./Counter";
+import { formatTime } from "./formatTime";
 
 // A Server Component: this code runs ONLY on the server. Its output is HTML.
 export const dynamic = "force-dynamic"; // re-render per request so the SSR timestamp is honest
@@ -10,7 +11,7 @@ async function getInitialCount(): Promise<number> {
 
 export default async function Page() {
   const initialCount = await getInitialCount();
-  const renderedAt = new Date().toLocaleTimeString();
+  const renderedAt = formatTime(new Date());
 
   return (
     <main>
