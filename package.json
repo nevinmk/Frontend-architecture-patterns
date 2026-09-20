@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "npm run build --prefix 05-jamstack && npm run build --prefix 06-pwa",
     "dev": "node scripts/dev.mjs",
-    "dev:all": "concurrently --kill-others -n hub,mpa,spa,ssr,products,cart,shell,jam,pwa,gql-api,gql-web -c cyan,green,yellow,blue,magenta,magenta,magenta,gray,white,red,redBright \"node hub/server.js\" \"npm run dev --prefix 01-mpa\" \"npm run dev --prefix 02-spa\" \"npm run dev --prefix 03-ssr-hybrid\" \"npm run dev --prefix 04-micro-frontends/remote-products\" \"npm run dev --prefix 04-micro-frontends/remote-cart\" \"npm run dev --prefix 04-micro-frontends/shell\" \"npm run start --prefix 05-jamstack\" \"npm run preview --prefix 06-pwa\" \"npm run dev:api --prefix 07-graphql\" \"npm run dev:web --prefix 07-graphql\"",
+    "dev:all": "concurrently --kill-others -n hub,mpa,spa,ssr,products,cart,reviews,shell,jam,pwa,gql-api,gql-web -c cyan,green,yellow,blue,magenta,magenta,magenta,magenta,gray,white,red,redBright \"node hub/server.js\" \"npm run dev --prefix 01-mpa\" \"npm run dev --prefix 02-spa\" \"npm run dev --prefix 03-ssr-hybrid\" \"npm run dev --prefix 04-micro-frontends/remote-products\" \"npm run dev --prefix 04-micro-frontends/remote-cart\" \"npm run dev --prefix 04-micro-frontends/remote-reviews\" \"npm run dev --prefix 04-micro-frontends/shell\" \"npm run start --prefix 05-jamstack\" \"npm run preview --prefix 06-pwa\" \"npm run dev:api --prefix 07-graphql\" \"npm run dev:web --prefix 07-graphql\"",
     "ports:free": "node scripts/free-ports.mjs",
     "hub": "node hub/server.js"
   },

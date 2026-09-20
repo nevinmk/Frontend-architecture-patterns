@@ -130,7 +130,7 @@
     <div class="grid" id="cards"></div>
 
     <footer>
-      <span><em>Ports</em> — hub <strong>3000</strong> · apps <strong>3001–3007</strong> · remotes <strong>3041/3042</strong> · GraphQL API <strong>3071</strong></span>
+      <span><em>Ports</em> — hub <strong>3000</strong> · apps <strong>3001–3007</strong> · remotes <strong>3041–3043</strong> · GraphQL API <strong>3071</strong></span>
       <span>Each folder's README explains its architecture in depth.</span>
     </footer>
   </div>
@@ -144,8 +144,8 @@
       { port: 3003, num: "03", name: "SSR / Hybrid", stack: "Next.js App Router",
         desc: "Server-rendered first paint, hydrated in the browser into a fully interactive app." },
       { port: 3004, num: "04", name: "Micro-Frontends", stack: "Vite · Module Federation",
-        desc: "A shell composes two independently deployed remotes at runtime — zero shared code.",
-        extras: [[3041, "products"], [3042, "cart"]] },
+        desc: "A shell composes independently deployed remotes at runtime — two in the browser, one server-rendered fragment stitched in on the server.",
+        extras: [[3041, "products"], [3042, "cart"], [3043, "reviews (SSR)"]] },
       { port: 3005, num: "05", name: "JAMstack", stack: "Next.js static export",
         desc: "HTML frozen at build time, served as plain files; dynamic data fetched from APIs." },
       { port: 3006, num: "06", name: "Progressive Web App", stack: "Vite · vite-plugin-pwa",
