@@ -54,7 +54,7 @@ npm run dev
 # open http://localhost:3000
 ```
 
-Each app also runs on its own — `cd` into its folder and follow its README.
+Each app also runs on its own — `cd` into its folder and follow its README (each lists its own port and commands).
 
 ## Architecture guides
 
