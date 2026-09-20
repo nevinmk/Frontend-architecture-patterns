@@ -1,0 +1,6 @@
+{
+  "remotes": [
+    { "name": "products", "entry": "http://localhost:3041/remoteEntry.js", "version": "dev" },
+    { "name": "cart", "entry": "http://localhost:3042/remoteEntry.js", "version": "dev" }
+  ]
+}

@@ -10,7 +10,7 @@ and what to look for in the demo.
 | [01-mpa](01-mpa/) | Multi-Page App (server-rendered) | Express + React (`renderToStaticMarkup`) | 3001 |
 | [02-spa](02-spa/) | Single-Page App | Vite + React + React Router | 3002 |
 | [03-ssr-hybrid](03-ssr-hybrid/) | SSR / Hybrid (hydration) | Next.js (App Router) | 3003 |
-| [04-micro-frontends](04-micro-frontends/) | Micro-Frontends | Vite + Module Federation (shell + 2 remotes) | 3004 (+3041, 3042) |
+| [04-micro-frontends](04-micro-frontends/) | Micro-Frontends | Vite + Module Federation (shell + 2 remotes) + SSR fragment remote | 3004 (+3041, 3042, 3043) |
 | [05-jamstack](05-jamstack/) | JAMstack / Static-first | Next.js `output: "export"` + static host | 3005 |
 | [06-pwa](06-pwa/) | Progressive Web App | Vite + React + vite-plugin-pwa | 3006 |
 | [07-graphql](07-graphql/) | GraphQL data layer | graphql-yoga + Vite + React + Apollo Client | 3007 (+3071 API) |
@@ -40,6 +40,7 @@ cd 02-spa && npm install && cd ..
 cd 03-ssr-hybrid && npm install && cd ..
 cd 04-micro-frontends/remote-products && npm install && cd ../..
 cd 04-micro-frontends/remote-cart && npm install && cd ../..
+cd 04-micro-frontends/remote-reviews && npm install && cd ../..
 cd 04-micro-frontends/shell && npm install && cd ../..
 cd 05-jamstack && npm install && cd ..
 cd 06-pwa && npm install && cd ..

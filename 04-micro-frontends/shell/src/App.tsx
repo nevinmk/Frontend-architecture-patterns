@@ -1,9 +1,10 @@
 import { Suspense, lazy } from "react";
+import { loadWidget } from "./remotes";
 
-// Loaded over the network from each team's own deployment (ports 3041/3042).
+// Loaded over the network from whatever URL remotes.json lists for each team.
 // The shell has no copy of this code — check the Network tab.
-const ProductsWidget = lazy(() => import("products/ProductsWidget"));
-const CartWidget = lazy(() => import("cart/CartWidget"));
+const ProductsWidget = lazy(() => loadWidget("products/ProductsWidget"));
+const CartWidget = lazy(() => loadWidget("cart/CartWidget"));
 
 export function App() {
   return (
