@@ -1,12 +1,12 @@
 {
-  "name": "mfe-shell",
+  "name": "mfe-remote-reviews",
   "private": true,
   "version": "1.0.0",
-  "description": "Micro-frontends host: composes independently deployed remotes via Module Federation",
+  "description": "Team C's micro-frontend: a server-rendered reviews fragment that hydrates as an island",
   "type": "module",
   "scripts": {
     "dev": "node server.mjs",
-    "build": "vite build",
+    "build": "vite build && vite build --ssr src/entry-server.tsx --outDir dist/server",
     "preview": "node server.mjs --prod",
     "start": "node server.mjs"
   },
@@ -15,10 +15,9 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@module-federation/vite": "^1.19.1",
+    "@types/node": "^24.0.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.4",
     "typescript": "^7.0.2",
     "vite": "^8.1.5"
   }
