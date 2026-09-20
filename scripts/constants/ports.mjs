@@ -12,7 +12,6 @@ export const PORTS = {
   graphqlWeb: 3007,
   remoteProducts: 3041,
   remoteCart: 3042,
-  remoteReviews: 3043,
   graphqlApi: 3071,
 };
 
