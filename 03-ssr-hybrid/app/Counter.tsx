@@ -4,6 +4,7 @@
 // hydrated in the browser — React attaches state and event handlers to the
 // existing markup instead of re-creating it.
 import { useEffect, useState } from "react";
+import { formatTime } from "./formatTime";
 
 export function Counter({ initialCount }: { initialCount: number }) {
   const [count, setCount] = useState(initialCount);
@@ -11,7 +12,7 @@ export function Counter({ initialCount }: { initialCount: number }) {
 
   // Effects only run after hydration, so this timestamps the takeover moment.
   useEffect(() => {
-    setHydratedAt(new Date().toLocaleTimeString());
+    setHydratedAt(formatTime(new Date()));
   }, []);
 
   return (
