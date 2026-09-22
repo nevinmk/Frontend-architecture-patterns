@@ -3,11 +3,12 @@
 How remotes are owned, released and reverted in production. Companion to the
 [README](README.md).
 
-> **Status of this repo.** What is implemented today is the *build-time* model
-> ([§2A](#2a-build-time-env-vars-current)): remote URLs come from `VITE_*_REMOTE_URL` and are inlined into the
-> shell bundle. The *runtime manifest* model ([§2B](#2b-runtime-manifest-recommended-for-prod)) is the recommended production
-> setup and is described here as the target design; the shell does not fetch a
-> manifest yet. Where the two differ for rollback, both are covered ([§5](#5-rollback-strategy)).
+> **Status of this repo.** The shell uses the *runtime manifest* model
+> ([§2B](#2b-runtime-manifest-implemented)): it fetches `remotes.json` at boot
+> and registers the remotes from it (`shell/src/remotes.ts`). The *build-time*
+> env-var model ([§2A](#2a-build-time-env-vars-alternative)) is what an earlier
+> version of the shell used; it is kept as the alternative and for comparison.
+> Where the two differ for rollback, both are covered ([§5](#5-rollback-strategy)).
 
 ## 1. Who owns what
 
@@ -15,7 +16,7 @@ How remotes are owned, released and reverted in production. Companion to the
 |---|---|---|
 | Remote code (`products`, `cart`) | the remote's team | that team's repo |
 | Remote build output (`remoteEntry.js` + chunks) | the remote's pipeline | CDN/object store, **immutable, versioned paths** |
-| Remote *pointer* (which build is live) | the remote's pipeline (or a release team, see [§3](#3-release-flow-for-a-remote)) | env vars ([§2A](#2a-build-time-env-vars-current)) or `remotes.json` ([§2B](#2b-runtime-manifest-recommended-for-prod)) |
+| Remote *pointer* (which build is live) | the remote's pipeline (or a release team, see [§3](#3-release-flow-for-a-remote)) | env vars ([§2A](#2a-build-time-env-vars-alternative)) or `remotes.json` ([§2B](#2b-runtime-manifest-implemented)) |
 | Shell code and layout | platform / shell team | shell repo |
 | SSR fragment remote (`reviews`) | its team | own service; shell reads `REVIEWS_FRAGMENT_URL` |
 
@@ -24,11 +25,11 @@ applies it.
 
 ## 2. How a remote's URL reaches the shell
 
-### 2A. Build-time env vars (current)
+### 2A. Build-time env vars (alternative)
 
-The shell is built with `VITE_PRODUCTS_REMOTE_URL` / `VITE_CART_REMOTE_URL`
-(see [shell/.env.production.example](shell/.env.production.example)). Vite
-inlines them into the bundle.
+In this model the shell is built with `VITE_PRODUCTS_REMOTE_URL` /
+`VITE_CART_REMOTE_URL` and Vite inlines them into the bundle. The shell no
+longer works this way; the section stays for comparison.
 
 - Changing a remote's URL means **rebuilding and redeploying the shell**.
 - Fine when remote URLs are stable (e.g. always `.../current/remoteEntry.js`
@@ -36,7 +37,7 @@ inlines them into the bundle.
 - The coupling: every remote release that changes a URL needs the shell
   pipeline. That is the thing micro-frontends are meant to avoid.
 
-### 2B. Runtime manifest (recommended for prod)
+### 2B. Runtime manifest (implemented)
 
 The shell fetches a small JSON at boot and registers remotes from it, so URLs
 are not in the bundle. A release becomes "publish a new manifest", and the
@@ -53,11 +54,15 @@ shell is untouched.
 
 - `entry` points at an **immutable, versioned** path. `version` is metadata
   for the boot log and for debugging which builds were composed.
+- The shell reads it from `VITE_REMOTES_MANIFEST_URL` (default: its own
+  `/remotes.json`, from [shell/public/remotes.json](shell/public/remotes.json);
+  see [shell/.env.production.example](shell/.env.production.example)).
 - Serve the manifest with `Cache-Control: no-cache` (or a short TTL, ~30-60s).
   A long TTL delays both releases and rollbacks.
 - One manifest per environment (dev / staging / prod). Never share one.
 - Shell behaviour on a bad manifest: fall back to the last-known-good copy
-  (bundled at shell build time or kept in `localStorage`) rather than
+  (kept in `localStorage` after each good fetch), then the copy bundled at shell
+  build time, rather than
   rendering nothing.
 
 ## 3. Release flow for a remote
@@ -122,14 +127,14 @@ and without other teams' remotes being affected.
 3. **Repoint to the previous version (minutes) — the main rollback.** Because
    old builds are immutable and still on the CDN, rollback is changing a
    pointer:
-   - *Manifest model ([§2B](#2b-runtime-manifest-recommended-for-prod)):* revert that remote's entry to the previous
+   - *Manifest model ([§2B](#2b-runtime-manifest-implemented)):* revert that remote's entry to the previous
      `entry`/`version` and republish the manifest. Only that remote changes;
      the shell and other remotes are untouched. Users pick it up on next page
      load (bounded by the manifest cache TTL).
-   - *Env-var model ([§2A](#2a-build-time-env-vars-current)):* if the remote deploys to a stable `current` path,
+   - *Env-var model ([§2A](#2a-build-time-env-vars-alternative)):* if the remote deploys to a stable `current` path,
      repoint `current` to the previous build on the CDN (alias/symlink/copy).
      If the URL is baked into the shell, you must rebuild and redeploy the
-     shell with the old URL, which is why [§2A](#2a-build-time-env-vars-current) is the slower path.
+     shell with the old URL, which is why [§2A](#2a-build-time-env-vars-alternative) is the slower path.
 4. **Redeploy previous artifact.** If the pointer model isn't available,
    re-run the remote's pipeline for the last good commit/tag. Slowest, and
    avoid relying on it.

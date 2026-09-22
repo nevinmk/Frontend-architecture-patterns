@@ -130,7 +130,7 @@
     <div class="grid" id="cards"></div>
 
     <footer>
-      <span><em>Ports</em> — hub <strong>3000</strong> · apps <strong>3001–3007</strong> · remotes <strong>3041–3043</strong> · GraphQL API <strong>3071</strong></span>
+      <span><em>Ports</em> — hub <strong>3000</strong> · apps <strong>3001–3008</strong> · remotes <strong>3041–3043</strong> · GraphQL API <strong>3071</strong></span>
       <span>Each folder's README explains its architecture in depth.</span>
     </footer>
   </div>
@@ -153,6 +153,8 @@
       { port: 3007, num: "07", name: "GraphQL Data Layer", stack: "graphql-yoga · Apollo Client",
         desc: "One schema, one endpoint: the client declares the exact shape it needs and gets it in a single round-trip.",
         extrasLabel: "API", extras: [[3071, "graphql"]] },
+      { port: 3008, num: "08", name: "Rendering at Scale", stack: "SVG · Canvas 2D · raw WebGL",
+        desc: "The same 10k+ particle simulation drawn three ways — compare live FPS to see retained-mode DOM vs immediate-mode bitmap vs GPU pipeline actually scale." },
     ];
 
     const grid = document.getElementById("cards");

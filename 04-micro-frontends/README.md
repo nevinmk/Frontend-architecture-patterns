@@ -64,16 +64,16 @@ cd shell && npm run dev               # :3004  ← open this one
 
 ## Dev vs. prod config
 
-The remote URLs in [shell/vite.config.ts](shell/vite.config.ts) come from
-`VITE_PRODUCTS_REMOTE_URL` / `VITE_CART_REMOTE_URL`, falling back to the
-localhost ports above when unset. In prod, build the shell with a
-`.env.production` (see `.env.production.example`) pointing at each team's
-real deployed `remoteEntry.js`. Two things to note:
+The shell does not hard-code its remotes. At boot it fetches `remotes.json`
+([shell/public/remotes.json](shell/public/remotes.json) in dev; set
+`VITE_REMOTES_MANIFEST_URL` to point at an environment's own manifest, see
+`.env.production.example`) and registers the remotes it lists
+([shell/src/remotes.ts](shell/src/remotes.ts)). Two things to note:
 
-- Vite inlines env vars at **build time**, so the shell needs a rebuild
-  (not just a redeploy) whenever a remote's URL changes. Fully independent
-  deploys — where the shell picks up a new remote URL without rebuilding —
-  need a runtime manifest/config fetch instead of build-time env vars.
+- A remote release or rollback is a manifest change; the shell is not
+  rebuilt. If the manifest can't be fetched, the shell falls back to the last
+  good copy it stored, then to the one bundled at build time. See
+  [Runbook.md](Runbook.md) §2B.
 - The remotes' `server`/`preview` blocks (with `cors: true`) are Vite's dev
   and local-preview servers only. In prod, each remote is a static build
   served from a CDN/host, where CORS is configured at that layer — scoped to

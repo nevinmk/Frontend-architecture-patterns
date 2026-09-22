@@ -15,6 +15,12 @@ and what to look for in the demo.
 | [06-pwa](06-pwa/) | Progressive Web App | Vite + React + vite-plugin-pwa | 3006 |
 | [07-graphql](07-graphql/) | GraphQL data layer | graphql-yoga + Vite + React + Apollo Client | 3007 (+3071 API) |
 
+Plus one rendering-technique deep dive, orthogonal to all of the above:
+
+| Folder | Topic | Stack | Port |
+|---|---|---|---|
+| [08-rendering-at-scale](08-rendering-at-scale/) | SVG vs Canvas vs WebGL at 10k+ objects | Vite + React + raw WebGL | 3008 |
+
 <img width="972" height="854" alt="image" src="https://github.com/user-attachments/assets/56c40fe5-9850-4dfa-82c6-a21628933dac" />
 
 ## How they relate
@@ -27,6 +33,10 @@ and what to look for in the demo.
   client get its data?*" and could sit underneath 02, 03 or 04 unchanged. Its
   API also publishes the same catalogue as REST, so the demo can measure the two
   contracts against each other rather than just describe them.
+- **08 (Rendering at Scale)** is a different axis entirely: not "where is the
+  app assembled" but "how does any one of these apps draw a lot of things on
+  screen." Any of 01–07 could hit this question once a view needs to render
+  thousands of items.
 
 ## Browse everything from one page
 
@@ -45,6 +55,7 @@ cd 04-micro-frontends/shell && npm install && cd ../..
 cd 05-jamstack && npm install && cd ..
 cd 06-pwa && npm install && cd ..
 cd 07-graphql && npm install && cd ..
+cd 08-rendering-at-scale && npm install && cd ..
 npm install                    # root: the `concurrently` runner
 
 # one-time: pre-build the two that serve build output (JAMstack + PWA)
@@ -69,3 +80,4 @@ look for in the demo — lives in that folder's README:
 - [05 — JAMstack / Static-first](05-jamstack/README.md)
 - [06 — Progressive Web App (PWA)](06-pwa/README.md)
 - [07 — GraphQL Data Layer](07-graphql/README.md)
+- [08 — Rendering at Scale (SVG vs Canvas vs WebGL)](08-rendering-at-scale/README.md)

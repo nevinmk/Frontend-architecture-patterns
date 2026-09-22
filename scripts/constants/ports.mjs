@@ -10,6 +10,7 @@ export const PORTS = {
   jamstack: 3005,
   pwa: 3006,
   graphqlWeb: 3007,
+  renderingAtScale: 3008,
   remoteProducts: 3041,
   remoteCart: 3042,
   remoteReviews: 3043,

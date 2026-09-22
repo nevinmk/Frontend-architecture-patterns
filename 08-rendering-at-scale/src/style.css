@@ -1,0 +1,257 @@
+:root {
+  --bg: #0d1a23;
+  --bg-glow: #12222e;
+  --card: rgba(255, 255, 255, 0.035);
+  --card-border: rgba(158, 194, 216, 0.14);
+  --title: #e9f1f6;
+  --text: #c6d4dd;
+  --muted: #8fa4b1;
+  --chip: rgba(158, 194, 216, 0.09);
+  --accent: #5fb0e0;
+  --green: #7bc98c;
+  --yellow: #e0c15f;
+  --red: #e07b7b;
+  --serif: ui-serif, "New York", Georgia, Cambria, "Times New Roman", serif;
+  --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(1100px 600px at 30% -10%, var(--bg-glow), var(--bg) 70%);
+  min-height: 100vh;
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+}
+
+.app {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 0.8rem;
+}
+
+h1 {
+  margin: 0 0 0.6rem;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+  color: var(--title);
+}
+
+.lede {
+  margin: 0 0 1.75rem;
+  max-width: 68ch;
+  color: var(--text);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-end;
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.control-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+select {
+  background: var(--chip);
+  border: 1px solid var(--card-border);
+  color: var(--title);
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+}
+
+button {
+  background: var(--chip);
+  border: 1px solid var(--card-border);
+  color: var(--title);
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+button:hover:not(:disabled) {
+  border-color: rgba(158, 194, 216, 0.32);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.primary {
+  background: rgba(95, 176, 224, 0.16);
+  border-color: rgba(95, 176, 224, 0.4);
+  color: #cfe8f7;
+}
+
+.segmented {
+  display: flex;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.segmented button {
+  border: none;
+  border-radius: 0;
+  border-right: 1px solid var(--card-border);
+}
+
+.segmented button:last-child {
+  border-right: none;
+}
+
+.segmented button.active {
+  background: rgba(95, 176, 224, 0.22);
+  color: #cfe8f7;
+}
+
+.stage-wrap {
+  position: relative;
+  display: inline-block;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  line-height: 0;
+}
+
+.stage-surface {
+  display: block;
+  background: #0b1620;
+}
+
+.stats-overlay {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: flex;
+  gap: 0.6rem;
+  z-index: 1;
+}
+
+.stat {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--text);
+  background: rgba(13, 26, 35, 0.72);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  backdrop-filter: blur(4px);
+}
+
+.stat strong {
+  color: var(--title);
+}
+
+.stat.fps.good {
+  color: var(--green);
+}
+
+.stat.fps.warn {
+  color: var(--yellow);
+}
+
+.stat.fps.bad {
+  color: var(--red);
+}
+
+.benchmark-panel {
+  margin-top: 1.5rem;
+  padding: 1.1rem 1.4rem;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  max-width: 900px;
+}
+
+.benchmark-panel h3 {
+  margin: 0 0 1rem;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--title);
+}
+
+.benchmark-row {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr 5rem;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.benchmark-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.benchmark-track {
+  height: 0.9rem;
+  background: var(--chip);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.benchmark-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.benchmark-fill.svg {
+  background: var(--red);
+}
+
+.benchmark-fill.canvas {
+  background: var(--yellow);
+}
+
+.benchmark-fill.webgl {
+  background: var(--green);
+}
+
+.benchmark-value {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: right;
+}

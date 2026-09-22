@@ -82,6 +82,9 @@ async function serveStatic(pathname, res) {
     const body = await readFile(file);
     res.writeHead(200, {
       "content-type": MIME[path.extname(file)] ?? "application/octet-stream",
+      // The manifest is the release pointer: revalidate on every load so a
+      // rollback lands at once (a 304 keeps it cheap).
+      ...(pathname === "/remotes.json" && { "cache-control": "no-cache" }),
     });
     res.end(body);
     return true;
